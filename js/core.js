@@ -131,14 +131,12 @@
         };
 	};
     var enableDrag = function(){
-        $('#board').dragsort("destroy");
         $('#board').dragsort({
 			dragSelector: 'div.col_state .column_head',
 			dragBetween: true,
 			placeHolderTemplate: "<div class='col_state placeholder'>&nbsp</div>",
 			dragEnd: dropColumn
 		});
-        $('#board ul.state').dragsort("destroy");
         $('#board ul.state').dragsort({
 			dragSelector: 'li .title',
 			dragBetween: true,
@@ -147,7 +145,7 @@
 		});
     };
 	var createBoard = function (app_data) {
-        console.log(app_data);
+        //console.log(app_data);
         var board = $('#board');
         $('#board div').remove();
         $.each( app_data.states, function( i, state ) {
@@ -161,7 +159,6 @@
         $(this).parent().children().each(function() {
             var index = $(this).attr('data-index');
             app_data.raw_states[index].index = $(this).parent().find( '.col_state' ).index( this );
-            console.log(this);
         });
         saveBoard(app_data.raw_states);
     }
@@ -284,7 +281,6 @@
         $(this).parent().children().each(function() {
             var id = $(this).attr('data-id');
             app_data.rawData[id].index = $(this).parent().find( 'li' ).index( this );
-            console.log(this);
         });
 		saveData(app_data.rawData);
 	};
@@ -420,7 +416,6 @@
                 }
                 if($(event.target).is('.remove_column')){
                     event.preventDefault();
-                    console.log($(event.target));
                     $(event.target).trigger('remove_column');
                 }
                 if($(event.target).is('a.coloption_trigger')){
@@ -505,7 +500,6 @@
                     if(result){
                         $column.remove();
                         var new_states = [];
-                        console.log(index);
                         var code = app_data.states[index].code;
                         delete app_data.state_index[code];
                         delete app_data.raw_states[index];
@@ -523,7 +517,6 @@
                         saveBoard(app_data.raw_states);
                         createBoard(app_data);
                         createStoryList(app_data);
-                        console.log(app_data);
                     }
 				}
 			});
@@ -531,7 +524,6 @@
 
 		$('#board').on('delete', '.delete', function (e) {
             e.preventDefault();
-            console.log(this);
             var $this = $(this);
             modal({
 				type: 'confirm',
