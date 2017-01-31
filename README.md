@@ -2,10 +2,11 @@ Simple Kanban
 =============
 
 Simple Kanban is a simple PHP powered Kanban board.
--added ability to create column
--added modal js script
--modified core.js
--jQuery to latest 3.1.1
+
+- added ability to create column
+- added modal js script
+- modified core.js
+- jQuery to latest 3.1.1
 - dragsort js to jquery.dragsort-0.5.2
 
 License Information
