@@ -180,8 +180,6 @@
      
 		return $content;
 	};
-
-
     
 	var createPeopleList = function () {
 		var peopleList = '<form ><ul class="people-list">';
@@ -418,6 +416,10 @@
                     event.preventDefault();
                     $(event.target).trigger('remove_column');
                 }
+                if($(event.target).is('a.kanban_info')){
+                    event.preventDefault();
+                    $(event.target).trigger('show_kanban_info');
+                }
                 if($(event.target).is('a.coloption_trigger')){
                     event.preventDefault();
                     $(event.target).trigger('show_col_option');
@@ -432,6 +434,24 @@
                 
             }
         });
+
+		$('body').on('show_kanban_info', 'a.kanban_info', function () {
+			var $this = $(this);
+            var modal_info = '<h4>Some tipps on how to use the dashboard</h4>';
+            modal_info += '<ul>';
+            modal_info += '    <li><strong>Create new project</strong>: Use "n" or click the icon in the top navigation</li>';
+            modal_info += '    <li><strong>Save a project</strong>: Press enter or click "save"</li>';
+            modal_info += '    <li><strong>Discard changes</strong>: Click "cancel", click anywhere outside the editing box or press "esc"</li>';
+            modal_info += '    <li><strong>Change order</strong>: Easy, peasy: just drag the project to a new position</li>';
+            modal_info += '</ul>';
+            modal({
+                title: 'Using Kanban', //Modal Title
+                text: modal_info,
+				callback: function(result) {
+					console.log(this);
+				}
+            });
+		});
 
 		$('#navigation').on('change', '.people-list input', function () {
 			var responsible = $(this).attr('name');
@@ -454,7 +474,6 @@
         $('#board').on('edit','.box',function(event){
             var $this = $(this);
             var story_id = $this.closest('li').attr('data-id');
-            var oldColor = app_data.rawData[story_id].color;
             
             var $title = $this.find('.title');
             var value = $title.text();
@@ -462,20 +481,66 @@
             var user = $user.text();
             var $content = $this.find('.card_content');
             var content = $content.text();
-            var $form = $('<form></form>').attr('id',$this.attr('id')).attr('class',$this.attr('class'));
-            $form.append($('<div class="panel-heading"><input type="text" class="editBox" value="' + value + '"/></div>'));
-            $form.append($('<div class="panel-body"><textarea class="card_content_textarea">' + content + '</textarea></div>'));
-            $form.append('<div class="panel-footer"><div class="user_box"><input type="text" class="userBox" value="' + user + '"/></div><a class="save" href="#">save</a> <a class="cancel" href="#">cancel</a> <a href="#" class="delete">delete</a> <a href="#" class="color">color</a></div>');
-            $this.replaceWith($form);
+            var state = $this.closest('.col_state').attr('id').replace('state_','');
+            var modal_heading = '<input class="editBox" name="title" value="'+value+'" type="text">';
+            var modal_content = '<div class="form-group">';
+            modal_content += '    <label for="card_description">Description</label>';
+            modal_content += '    <textarea class="card_content_textarea" name="card_description" id="card_description">'+content+'</textarea>';
+            modal_content += '</div>';
+            modal_content += '<div class="form-group">';
+            modal_content += '    <label for="card_user">User</label>';
+            modal_content += '    <input class="card_user" id="card_user" name="user" value="'+user+'" type="text">';
+            modal_content += '</div>';
+            modal_content += '<input name="card_id" value="'+story_id+'" type="hidden">';
+            modal_content += '<input name="card_state" value="'+state+'" type="hidden">';
+            
+            modal({
+                title: modal_heading,
+                text: modal_content,
+                buttons: [{
+                    text: 'Cancel',
+                    val: false,
+                    eKey: false,
+                    addClass: 'btn-white btn-square',
+                    onClick: function(dialog) {
+                        $(dialog.html).find('a.modal-close-btn').click();
+                    }
+                },{
+                    text: 'Save',
+                    val: true,
+                    eKey: true,
+                    addClass: 'btn-light-blue btn-square',
+                    onClick: function(dialog) {
+                        console.log(dialog);
+                        var $dialog = $(dialog.html);
+                        story_id = $dialog.find('input[name="card_id"]').val();
+                        var color = getBoxColor($this);
+                        var story = newCardObject({
+                            id: story_id,
+                            title: $dialog.find('input[name="title"]').val(),
+                            content:$dialog.find('textarea[name="card_description"]').val(),
+                            responsible: $dialog.find( 'input[name="user"]').val(),
+                            state: $dialog.find('input[name="card_state"]').val(),
+                            color:parseInt(color),
+                        });
 
-            if($(event.target).is($title)){
-                $this.find('.editBox').focus();
-            }
+                        app_data.rawData[story_id] = story;
+                        saveData(app_data.rawData);
+                        $this.replaceWith(createStoryCard(story));
+                        $dialog.find('a.modal-close-btn').click();
+                    }
+                }, ],
+				template: '<div id="edit_card" class="modal-box"><div class="modal-inner"><div class="modal-title"><a class="modal-close-btn"></a></div><div class="modal-text"></div><div class="modal-buttons"></div></div></div>',
+				_classes: {
+					box: '.modal-box',
+					boxInner: ".modal-inner",
+					title: '.modal-title',
+					content: '.modal-text',
+					buttons: '.modal-buttons',
+					closebtn: '.modal-close-btn'
+				}
+            });
 
-            if($(event.target).is($user)){
-                $this.find('.userBox').focus();
-            }
-            IN_EDIT_MODE = $form;
         });
         
 		$('#board').on('cancel', '.cancel', function (e) {

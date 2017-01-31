@@ -137,3 +137,11 @@ nav.top li {
 }
 ul.coldropdown{background:#f2efea;border-radius: 5px;width:150px;border: 1px solid #b5b5b5;}
 ul.coldropdown a{color: #5b4636;display:block;padding:3px 5px;}
+.state .panel-heading{padding-left:5px;}
+.state .panel-body{padding:5px;}
+.state .panel-body::before,.state .panel-body::after{font-size:1px;line-height:1px;height:1px;}
+.state .panel-footer{padding:5px;}
+#edit_card textarea.card_content_textarea{resize:none;} 
+#edit_card input.card_user,
+#edit_card h3 input.editBox,
+#edit_card textarea.card_content_textarea{width:100%;} 

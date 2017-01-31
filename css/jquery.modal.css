@@ -93,6 +93,7 @@
     font-weight: normal;
     line-height: normal;
     display: inline-block;
+    width:100%;
     margin: 0;
     padding: 0;
 }
