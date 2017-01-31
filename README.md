@@ -3,6 +3,16 @@ Simple Kanban
 
 Simple Kanban is a simple PHP powered Kanban board.
 
+Idea and first version was from Stephan Schmidt (http://www.simple-kanban.com/) but was then completely written from ground up.
+
+Project page: http://rapsli.github.com/simple-kanban/
+
+Demo: http://rapsli.github.com/simple-kanban/demo
+
+LivingFlame Demo: http://livingflame.hostfree.pw/simple-kanban/
+
+Changes on this fork
+
 - added ability to create column
 - added modal js script
 - modified core.js
