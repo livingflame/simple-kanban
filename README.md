@@ -2,13 +2,11 @@ Simple Kanban
 =============
 
 Simple Kanban is a simple PHP powered Kanban board.
-
-Idea and first version was from Stephan Schmidt (http://www.simple-kanban.com/) but was then completely written from ground up.
-
-Project page: http://rapsli.github.com/simple-kanban/
-
-Demo: http://rapsli.github.com/simple-kanban/demo
-
+-added ability to create column
+-added modal js script
+-modified core.js
+-jQuery to latest 3.1.1
+- dragsort js to jquery.dragsort-0.5.2
 
 License Information
 -------------------

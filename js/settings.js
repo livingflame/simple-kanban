@@ -5,7 +5,7 @@ var possibleStates = [
 	'C,Concept',
 	'D,Development',
 	'Dy,Deployment',
-	'L,Live'
+	'L,Live',
 ];
 
-var possible_colors = 4;
+var possible_colors = 10;
