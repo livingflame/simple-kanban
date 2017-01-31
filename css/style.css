@@ -135,3 +135,5 @@ nav.top li {
 .modal-dialog{
     color: #5b4636;
 }
+ul.coldropdown{background:#f2efea;border-radius: 5px;width:150px;border: 1px solid #b5b5b5;}
+ul.coldropdown a{color: #5b4636;display:block;padding:3px 5px;}

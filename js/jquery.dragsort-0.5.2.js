@@ -5,13 +5,17 @@
 (function($) {
 
 	$.fn.dragsort = function(options) {
+        var lists = [];
 		if (options == "destroy") {
-			$(this.selector).trigger("dragsort-uninit");
+            this.each(function(i,el){
+                $(el).trigger("dragsort-uninit");
+            });
+            lists = [];
 			return;
 		}
 
 		var opts = $.extend({}, $.fn.dragsort.defaults, options);
-		var lists = [];
+		
 		var list = null, lastPos = null;
 
 		this.each(function(i, cont) {

@@ -130,6 +130,22 @@
             index:states_index
         };
 	};
+    var enableDrag = function(){
+        $('#board').dragsort("destroy");
+        $('#board').dragsort({
+			dragSelector: 'div.col_state .column_head',
+			dragBetween: true,
+			placeHolderTemplate: "<div class='col_state placeholder'>&nbsp</div>",
+			dragEnd: dropColumn
+		});
+        $('#board ul.state').dragsort("destroy");
+        $('#board ul.state').dragsort({
+			dragSelector: 'li .title',
+			dragBetween: true,
+			placeHolderTemplate: "<li class='placeholder'><div>&nbsp</div></li>",
+			dragEnd: droppedElement
+		});
+    };
 	var createBoard = function (app_data) {
         console.log(app_data);
         var board = $('#board');
@@ -139,18 +155,7 @@
                $('#board').append(createColumn(state.code, state.label,i));
             }
         });
-        $('#board').dragsort({
-			dragSelector: 'div.col_state .column_head',
-			dragBetween: true,
-			placeHolderTemplate: "<div class='col_state placeholder'>&nbsp</div>",
-			dragEnd: dropColumn
-		});
-        $('#board ul.state').dragsort({
-			dragSelector: 'li .title',
-			dragBetween: true,
-			placeHolderTemplate: "<li class='placeholder'><div>&nbsp</div></li>",
-			dragEnd: droppedElement
-		});
+        enableDrag();
 	};
     var dropColumn = function(){
         $(this).parent().children().each(function() {
@@ -340,7 +345,8 @@
         }
 
         $('#board').on('dblclick','.column_head',divClicked);
-
+        
+        /*  new column  */
         $(document).on('click','.new_column',function(e){
             e.preventDefault();
             
@@ -352,9 +358,12 @@
             app_data.state_index[state.code] = index;
             saveBoard(app_data.raw_states);
             $('#board').append(createColumn(state.code, state.label,index));
+            createBoard(app_data);
+            createStoryList(app_data);
+     
         });
         
-        
+        /*  new card  */
         $('#board').on('new','.new',function(e){
             e.preventDefault();
             
@@ -523,14 +532,15 @@
 		$('#board').on('delete', '.delete', function (e) {
             e.preventDefault();
             console.log(this);
+            var $this = $(this);
             modal({
 				type: 'confirm',
 				title: 'Confirm',
 				text: 'Are you sure you want to delete this card?',
 				callback: function(result) {
                     if(result){
-                        var id = $(this).closest('li').attr('data-id');
-                        $(this).closest('li').remove();
+                        var id = $this.closest('li').attr('data-id');
+                        $this.closest('li').remove();
 
                         delete app_data.rawData[id];
                         saveData(app_data.rawData);
