@@ -68,11 +68,11 @@ ul {
     background-color: #fff;
 }
 #board .col_state .edit{position:relative;right:-8px;top:-2px;}
-#board .column_head{margin:0;padding:8px 0 8px 0;font-size:20px;}
-#board .col_state .coloption{position:absolute;top:0;right:0;width:30px;height:22px;z-index:2;}
+#board .column_head{margin:0;padding:8px 0 15px 0;font-size:20px;}
+#board .col_state .coloption{position:absolute;top:15px;right:8px;z-index:2;}
 #board .col_state .coloption a.coloption_trigger,
 #board .col_state .coloption a.coloption_trigger:hover,
-#board .col_state .coloption a.coloption_trigger:active {color:#bdb1a8;border:0;background:transparent;text-decoration: none;}
+#board .col_state .coloption a.coloption_trigger:active {color:#bdb1a8;text-decoration: none;}
 
 #board .col_state .coloption .coldropdown{position:absolute;top:22px;right:0;z-index:2;display:none;}
 #board .col_state .coloption .coldropdown.show_col_dropdown{display:block;}
@@ -137,11 +137,24 @@ nav.top li {
 }
 ul.coldropdown{background:#f2efea;border-radius: 5px;width:150px;border: 1px solid #b5b5b5;}
 ul.coldropdown a{color: #5b4636;display:block;padding:3px 5px;}
-.state .panel-heading{padding-left:5px;}
-.state .panel-body{padding:5px;}
-.state .panel-body::before,.state .panel-body::after{font-size:1px;line-height:1px;height:1px;}
-.state .panel-footer{padding:5px;}
+
 #edit_card textarea.card_content_textarea{resize:none;} 
 #edit_card input.card_user,
 #edit_card h3 input.editBox,
 #edit_card textarea.card_content_textarea{width:100%;} 
+.state .user_container{border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding:8px 0;margin-bottom:8px;}
+.state .card_title{display:inline-block;}
+.state .card_content{padding:8px 8px 0 8px;}
+.state .card-footer{padding:8px;}
+.state .user_responsible{position:relative;top:-12px;left:-4px;background:#fff;display:inline-block;}
+.state .user_responsible img{width:35px;height:35px;border-radius: 4px;border:1px solid #ccc;}
+.state .box{border-radius:4px;border: 1px solid #ddd;position:relative;background:#fff;margin-bottom:20px;padding-top:5px;}
+.state .box.color_0{border-top:3px solid #cccccc;}
+.state .box.color_1{border-top:3px solid #337ab7;}
+.state .box.color_2{border-top:3px solid #5cb85c;}
+.state .box.color_3{border-top:3px solid #5bc0de;}
+.state .box.color_4{border-top:3px solid #f0ad4e;}
+.state .box.color_5{border-top:3px solid #d9534f;}
+
+.state .box a.card_edit{color:#ddd;}
+.state .box a.card_edit:hover{color:#777;}

@@ -41,7 +41,7 @@
 			type: 'POST',
 			url: 'server.php',
 			data: {
-				action: 'load_column'
+				action: 'load_columns'
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -65,7 +65,7 @@
 			type: 'POST',
 			url: 'server.php',
 			data: {
-				action: 'save_column',
+				action: 'save_columns',
 				data: data
 			},
 			dataType: 'json'
@@ -77,7 +77,7 @@
 			type: 'POST',
 			url: 'server.php',
 			data: {
-				action: 'load'
+				action: 'load_cards'
 			},
 			dataType: 'json',
 			success: function (data) {
@@ -101,7 +101,7 @@
 			type: 'POST',
 			url: 'server.php',
 			data: {
-				action: 'save',
+				action: 'save_cards',
 				data: data
 			},
 			dataType: 'json'
@@ -167,7 +167,7 @@
 		var content = '<div id="state_' + state + '" class="col_state state_' + state + '" data-index="' + num + '">';
 		content += '<h3 class="column_head">' + headlines + '</h3>';
         content += '<div class="coloption">';
-        content += '<a href="#" class="coloption_trigger glyphicon glyphicon-option-horizontal"></a>';
+        content += '<a href="#" class="coloption_trigger btn btn-default btn-xs"><i class="glyphicon glyphicon-option-vertical"></i></a>';
         content += '<ul class="coldropdown">';
         content += '     <li><a href="#" class="new"><i class="glyphicon glyphicon-plus-sign"></i> New Card</a></li>';
         content += '     <li><a href="#" class="remove_column"><i class="glyphicon glyphicon-remove-sign"></i> Remove</a></li>';
@@ -206,19 +206,22 @@
         }
     }
     var createStoryCard = function(story){
-        var card_element = $('<div id="card_'+story.id+'" class="box color_' + story.color + ' panel panel-' + getColorName(story.color) + '" ></div>');
-        var content = "<div class=\"title panel-heading\">" + story.title + "<button type=\"button\" class=\"edit btn btn-default btn-xs  pull-right\" data-dismiss=\"modal\"><i class=\"glyphicon glyphicon-pencil\"></i></button></div>";
-        content += "<div class=\"panel-body\"><div class=\"card_content\">" + story.content + "</div></div>";
-        content += "<div class=\"panel-footer\">";
-        content += "<div class=\"user_container\">" + story.responsible + "</div>";
+        var content = '<div id="card_'+story.id+'" class="box color_' + story.color + '">';
+        if(story.responsible){
+            content += "<div class=\"user_responsible\">";
+            content += "<img src=\"img/user.png\" alt=\""+story.responsible+"\" title=\""+story.responsible+"\">";
+            content += "</div>";
+        }
+        
+        content += "<div class=\"card_title\">" + story.title + "</div>";
+        content += "<div class=\"card-footer\">";
         content += '<span><i class="glyphicon glyphicon-comment"></i> 1</span> ';
         content += '<span><i class="glyphicon glyphicon-paperclip"></i> 1</span> ';
         content += '<span class="badge"><i class="glyphicon glyphicon-check"></i> 2/2</span> ';
         content += "</div>";
-   
+        content += "</div>";
         
-        card_element.append(content);
-        return card_element;
+        return $(content);
     }
 
 	var createStoryItem = function (story) {
@@ -312,7 +315,7 @@
 	$(document).ready(function () {
 		loadBoard();
 
-        $("#board").on('show_col_option','a.coloption_trigger',function(e){
+        $("#board").on('click','a.coloption_trigger',function(e){
             e.preventDefault();
             $(this).next().toggleClass('show_col_dropdown');
         });
@@ -358,7 +361,7 @@
         });
         
         /*  new card  */
-        $('#board').on('new','.new',function(e){
+        $('#board').on('click','.new',function(e){
             e.preventDefault();
             
 			var id = new Date().getTime();
@@ -374,68 +377,7 @@
 			$(storyHtml).find('.edit').trigger('edit');
         });
 
-        $(document).on('click',function(event) {
-            if($(event.target).closest('.box').length > 0) {
-                if (!IN_EDIT_MODE) {
-                    if($(event.target).is('.edit')){
-                        event.preventDefault();
-                        $(event.target).closest('.box').trigger('edit');
-                    }
-                } else {
-                    if(IN_EDIT_MODE.attr('id') !== $(event.target).closest('.box').attr('id')){
-                        IN_EDIT_MODE.find('.cancel').trigger('cancel');
-                    }
-                    if($(event.target).is('.cancel')){
-                        event.preventDefault();
-                        $(event.target).trigger('cancel');
-                    }
-                    if($(event.target).is('.delete')){
-                        event.preventDefault();
-                        $(event.target).trigger('delete');
-                    }
-                    if($(event.target).is('.color')){
-                        event.preventDefault();
-                        $(event.target).trigger('color');
-                    }
-                    if($(event.target).is('.save')){
-                        event.preventDefault();
-                        $(event.target).trigger('save');
-                    }
-                }
-            } else {
-                if(IN_EDIT_MODE){
-                    if(IN_EDIT_MODE.attr('id') !== $(event.target).closest('.box').attr('id')){
-                        IN_EDIT_MODE.find('.cancel').trigger('cancel');
-                    }
-                }
-                if($(event.target).is('.new')){
-                    event.preventDefault();
-                    $(event.target).trigger('new');
-                }
-                if($(event.target).is('.remove_column')){
-                    event.preventDefault();
-                    $(event.target).trigger('remove_column');
-                }
-                if($(event.target).is('a.kanban_info')){
-                    event.preventDefault();
-                    $(event.target).trigger('show_kanban_info');
-                }
-                if($(event.target).is('a.coloption_trigger')){
-                    event.preventDefault();
-                    $(event.target).trigger('show_col_option');
-                } else {
-                    $('a.coloption_trigger').each(function(i,element){
-                        if($(this).next().is(':visible')){
-                            $(this).trigger('show_col_option');
-                        }
-                    });
-                    
-                }
-                
-            }
-        });
-
-		$('body').on('show_kanban_info', 'a.kanban_info', function () {
+		$('body').on('click', 'a.kanban_info', function () {
 			var $this = $(this);
             var modal_info = '<h4>Some tipps on how to use the dashboard</h4>';
             modal_info += '<ul>';
@@ -453,7 +395,7 @@
             });
 		});
 
-		$('#navigation').on('change', '.people-list input', function () {
+		$('#navigation').on('click', '.people-list input', function () {
 			var responsible = $(this).attr('name');
 			for (var k in app_data.people[responsible]) {
 				if ($('#board li[data-id="' + app_data.people[responsible][k] + '"]').hasClass('highlight')) {
@@ -471,28 +413,21 @@
 				}
 			}
 		});
-        $('#board').on('edit','.box',function(event){
-            var $this = $(this);
-            var story_id = $this.closest('li').attr('data-id');
-            
-            var $title = $this.find('.title');
-            var value = $title.text();
-            var $user = $this.find('.user_container');
-            var user = $user.text();
-            var $content = $this.find('.card_content');
-            var content = $content.text();
-            var state = $this.closest('.col_state').attr('id').replace('state_','');
-            var modal_heading = '<input class="editBox" name="title" value="'+value+'" type="text">';
+        $('#board').on('click','.box',function(event){
+            var $box = $(this);
+            var story_id = $box.closest('li').attr('data-id');
+            var story = app_data.rawData[story_id];
+            var modal_heading = '<input class="editBox" name="title" value="'+story.title+'" type="text">';
             var modal_content = '<div class="form-group">';
             modal_content += '    <label for="card_description">Description</label>';
-            modal_content += '    <textarea class="card_content_textarea" name="card_description" id="card_description">'+content+'</textarea>';
+            modal_content += '    <textarea class="card_content_textarea" name="card_description" id="card_description">'+story.content+'</textarea>';
             modal_content += '</div>';
             modal_content += '<div class="form-group">';
-            modal_content += '    <label for="card_user">User</label>';
-            modal_content += '    <input class="card_user" id="card_user" name="user" value="'+user+'" type="text">';
+            modal_content += '    <label for="card_user">Assigned to:</label>';
+            modal_content += '    <input class="card_user" id="card_user" name="user" value="'+story.responsible+'" type="text">';
             modal_content += '</div>';
-            modal_content += '<input name="card_id" value="'+story_id+'" type="hidden">';
-            modal_content += '<input name="card_state" value="'+state+'" type="hidden">';
+            modal_content += '<input name="card_id" value="'+story.id+'" type="hidden">';
+            modal_content += '<input name="card_state" value="'+story.state+'" type="hidden">';
             
             modal({
                 title: modal_heading,
@@ -514,8 +449,8 @@
                         console.log(dialog);
                         var $dialog = $(dialog.html);
                         story_id = $dialog.find('input[name="card_id"]').val();
-                        var color = getBoxColor($this);
-                        var story = newCardObject({
+                        var color = getBoxColor($box);
+                        var new_story = newCardObject({
                             id: story_id,
                             title: $dialog.find('input[name="title"]').val(),
                             content:$dialog.find('textarea[name="card_description"]').val(),
@@ -524,13 +459,13 @@
                             color:parseInt(color),
                         });
 
-                        app_data.rawData[story_id] = story;
+                        app_data.rawData[story_id] = new_story;
                         saveData(app_data.rawData);
-                        $this.replaceWith(createStoryCard(story));
+                        $box.replaceWith(createStoryCard(new_story));
                         $dialog.find('a.modal-close-btn').click();
                     }
                 }, ],
-				template: '<div id="edit_card" class="modal-box"><div class="modal-inner"><div class="modal-title"><a class="modal-close-btn"></a></div><div class="modal-text"></div><div class="modal-buttons"></div></div></div>',
+				template: '<div id="edit_card" class="box panel panel-info modal-box"><div class="modal-inner"><div class="modal-title"><a class="modal-close-btn"></a></div><div class="modal-text"></div><div class="modal-buttons"></div></div></div>',
 				_classes: {
 					box: '.modal-box',
 					boxInner: ".modal-inner",
@@ -543,7 +478,7 @@
 
         });
         
-		$('#board').on('cancel', '.cancel', function (e) {
+		$('#board').on('click', '.cancel', function (e) {
             e.preventDefault();
             var $this = $(this);
             var $box = $this.closest('.box');
@@ -552,7 +487,7 @@
 			IN_EDIT_MODE = false;
 		});
         
-		$('#board').on('remove_column', '.remove_column', function (e) {
+		$('#board').on('click', '.remove_column', function (e) {
             e.preventDefault();
             var $this = $(this);
             var $column = $this.closest('.col_state');
@@ -587,7 +522,7 @@
 			});
 		});
 
-		$('#board').on('delete', '.delete', function (e) {
+		$('#board').on('click', '.delete', function (e) {
             e.preventDefault();
             var $this = $(this);
             modal({
@@ -618,7 +553,7 @@
             });
             return color;
         }
-		$('#board').on('color', '.color', function (e) {
+		$('#board').on('click', '.color', function (e) {
             e.preventDefault();
             
             var $box = $(this).closest('.box');
@@ -661,7 +596,7 @@
 			IN_EDIT_MODE = false;
 		});
 
-		$('#board').on('save', '.save', function (e) {
+		$('#board').on('click', '.save', function (e) {
             e.preventDefault();
 			$(this).closest('form').submit();
 		});
