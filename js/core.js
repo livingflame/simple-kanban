@@ -138,7 +138,7 @@
 			dragEnd: dropColumn
 		});
         $('#board ul.state').dragsort({
-			dragSelector: 'li .title',
+			dragSelector: 'li .box',
 			dragBetween: true,
 			placeHolderTemplate: "<li class='placeholder'><div>&nbsp</div></li>",
 			dragEnd: droppedElement
