@@ -1,0 +1,1 @@
+<?php/*|{"title":"asdasdasdas","content":"","responsible":[],"state":"c3","color":"0","index":"1","comments":[],"attachments":[],"tasks":[],"id":"crd_1502842309158","time":1502842309158}|*/?>

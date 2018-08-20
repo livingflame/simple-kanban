@@ -1,0 +1,1 @@
+<?php/*|{"user_id":"usr_1502874502234","user_name":"jasz","password":"$2y$10$wnsLIPpfW5kv7DibxWyWmOWytnhoQjxN0UXXuZVrKJ1WRpdkkp.P.","active":"1","secret_key":"732XlubxVSSO533nxocjvIieHnMdlcERazlgnhR1GIFdkHHr1AsOYcUTTUvO2x"}|*/?>

@@ -1,0 +1,1 @@
+<?php/*|{"title":"Pathing: 20170905 Pt2","content":"85148,85149","responsible":[],"state":"c2","color":"0","index":"3","comments":[],"attachments":[],"tasks":{"1504580140_0":{"id":"1504580140_0","time":1504580140920,"task":"85148,85149","done":"1"}},"id":"crd_1504580135438","time":"1504580135462","due":"September 6, 2017 12:25 PM"}|*/?>

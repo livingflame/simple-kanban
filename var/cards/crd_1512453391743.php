@@ -1,0 +1,1 @@
+<?php/*|{"title":"Tagging emoticons 20171205","content":"","responsible":[],"state":"col_1512453360338","color":"0","index":"1","comments":[],"attachments":[],"tasks":[],"id":"crd_1512453391743","time":1512453391743}|*/?>

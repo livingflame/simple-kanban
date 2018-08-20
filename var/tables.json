@@ -1,0 +1,30 @@
+{
+"archives":{},
+"authentication":{
+    "has_one": ["users"]
+},
+"boards":{
+    "has_many": ["columns","users"]
+},
+"cards":{
+    "has_one": ["columns"],
+    "has_many": ["users","checklist","comments"]
+},
+"checklist":{
+    "has_one": ["cards"]
+},
+"columns":{
+    "has_one": ["boards"],
+    "has_many": ["cards"]
+},
+"comments":{
+    "has_one": ["cards","users"],
+    "has_many": ["cards"]
+},
+"tasks":{},
+"sessions":{},
+"users":{
+    "authentication": ["cards"],
+    "has_many": ["users","checklist","comments","boards"]
+}
+}
